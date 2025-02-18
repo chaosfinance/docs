@@ -1,6 +1,6 @@
 ---
 title: Chao Architecture
-description: Chaos Finance is built on top of the Solana LSD Stack from StaFi’s AI-powered LSaaS.
+description: Chao Finance is built on top of the Solana LSD Stack from StaFi’s AI-powered LSaaS.
 ---
 
 ![architeture_1](/docs/architecture_1.webp)
@@ -18,9 +18,9 @@ Core roles:
 
 - Admin: manages parameters of sSONIC network
 
-## Stakers flows
+---
 
-### Stake Flow
+## Stake Flow
 
 Users can stake SONIC to the network via `stake` method, and users will receive equivalent amount of sSONIC.
 
@@ -28,17 +28,23 @@ Users can stake SONIC to the network via `stake` method, and users will receive 
 
 ![architeture_2](/docs/architecture_2.webp)
 
-### Unstake Flow
+---
+
+## Unstake Flow
 
 Any sSONIC holders are valid users, and can call `unstake` method to exchange SONIC with sSONIC.
 
 ![architeture_3](/docs/architecture_3.webp)
 
-### Withdraw Flow
+---
+
+## Withdraw Flow
 
 Users can get their principals and rewards by calling `withdraw` method when there are enough amount of matured stakes.
 
 ![architeture_4](/docs/architecture_4.webp)
+
+---
 
 ## Relay Service
 
