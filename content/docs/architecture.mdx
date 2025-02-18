@@ -1,0 +1,45 @@
+---
+title: Chao Architecture
+description: Chaos Finance is built on top of the Solana LSD Stack from StaFi’s AI-powered LSaaS.
+---
+
+![architeture_1](/docs/architecture_1.webp)
+
+
+In the Solana ecosystem, "smart contracts" are called programs. Each program is an on-chain account that stores executable logic, organized into specific functions referred to as instructions.
+
+Core Accounts:
+
+- StakeManager: the main account of sSONIC that stores all the states such as: rate, stake info list and commission fee
+- StakePool: an escrow account manages funds between stakers and sonic staking program
+- UnstakeAccount: an account stores unstake info such as: recipient, amount and withdrawal index
+
+Core roles:
+
+- Admin: manages parameters of sSONIC network
+
+## Stakers flows
+
+### Stake Flow
+
+Users can stake SONIC to the network via `stake` method, and users will receive equivalent amount of sSONIC.
+
+`Amount of sSONIC = stakingAmount * Total sSONIC Supply / Total SONIC Amount`
+
+![architeture_2](/docs/architecture_2.webp)
+
+### Unstake Flow
+
+Any sSONIC holders are valid users, and can call `unstake` method to exchange SONIC with sSONIC.
+
+![architeture_3](/docs/architecture_3.webp)
+
+### Withdraw Flow
+
+Users can get their principals and rewards by calling `withdraw` method when there are enough amount of matured stakes.
+
+![architeture_4](/docs/architecture_4.webp)
+
+## Relay Service
+
+Due to the limitation of smart contract, it could not launch an execution. So Chao Finance introduces Relay service. It will trigger StakeManager, at a certain interval, to collect and calculate users' reward, distribute it to the platform and users.
