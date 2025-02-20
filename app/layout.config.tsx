@@ -28,12 +28,17 @@ export const baseOptions: BaseLayoutProps = {
     },
     {
       text: 'Website',
-      url: 'https://chaofinance.xyz',
+      url: 'https://chaosfinance.xyz',
       active: 'nested-url',
     },
     {
       text: 'App',
-      url: 'https://app.chaofinance.xyz',
+      url: 'https://app.chaosfinance.xyz',
+      active: 'nested-url',
+    },
+    {
+      text: 'AI LSaaS',
+      url: 'https://stafi.io',
       active: 'nested-url',
     },
   ],
