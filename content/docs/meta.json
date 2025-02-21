@@ -10,7 +10,7 @@
     "lst",
     "token",
     "stake",
-    "contract_addresses",
-    "js_client_sdk"
+    "contract-addresses",
+    "js-client-sdk"
   ]
 }
