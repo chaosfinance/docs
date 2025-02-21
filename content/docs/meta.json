@@ -9,6 +9,8 @@
     "---Guide---",
     "lst",
     "token",
-    "stake"
+    "stake",
+    "contract_addresses",
+    "js_client_sdk"
   ]
 }
