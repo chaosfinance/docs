@@ -40,7 +40,7 @@ import {
 } from "@chaosfinance/sonic-lsd";
 ```
 
-## Settings functions
+## Settings Functions
 
 ### register()
 
@@ -75,11 +75,11 @@ updatePublicKey(newPublicKey);
 ```
 
 
-## Mutating functions
+## Mutating Functions
 
 ### stakeSonic()
 
-Developers should make sure that the stakeAmount is greater or equal to the minStakeAmount before sending the stake tx, otherwise it fails.
+Developers should make sure that the stakeAmount is greater or equal to [the userMinStakeAmount](#getuserminstakeamount) before sending the stake tx, otherwise it fails.
 
 ```javascript
 const stakeAmount = // **get the amount from user input**
@@ -93,7 +93,7 @@ if (stakeTxHash) {
 
 ### unstakeLstSonic()
 
-All LST holders are eligible to call `unstakeLstSonic` function.
+All LST holders are eligible to call `unstakeLstSonic` function to exchange their LST for SONIC.
 
 ```javascript
 const unstakeLstAmount = // **get the amount from user input**
@@ -107,7 +107,7 @@ if (txHash) {
 
 ### withdrawSonic()
 
-Call this function to withdraw the amount of `claimableAmount` SONIC the previous query api returns.
+Call this function to withdraw the amount of `claimableAmount` SONIC that the api [getUserWithdrawInfo\(\)](#getuserwithdrawinfo) returns.
 
 ```javascript
 const txHash = await withdrawSonic()
@@ -118,8 +118,7 @@ if (txHash) {
 }
 ```
 
-
-## Global Query functions
+## Global Query Functions
 
 ### getUserMinStakeAmount()
 
@@ -188,7 +187,7 @@ Get the total amount of LSD tokens in the LSD network.
 const totalLstAmount = await getTotalLstAmount()
 ```
 
-## User Query functions
+## User Query Functions
 
 ### getUserLstBalance()
 
@@ -212,9 +211,9 @@ After unstake, developers should query withdrawal info. It returns:
 //   remainingTimeInSeconds: number;
 // }
 
-import { getWithdrawInfo, WithdrawInfo } from "@chaosfinance/sonic-lsd";
+import { getUserWithdrawInfo, WithdrawInfo } from "@chaosfinance/sonic-lsd";
 
-const info: WithdrawInfo = await getWithdrawInfo();
+const info: WithdrawInfo = await getUserWithdrawInfo();
 ```
 
 
@@ -233,7 +232,6 @@ Get SONIC balance of the current wallet.
 const balance = await sonicBalance();
 // output: 1.68 (unit SONIC)
 ```
-
 
 ### getUserStakedAmount()
 
