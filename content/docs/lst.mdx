@@ -5,32 +5,32 @@ description: The sSONIC tokens are interest-bearing while retaining full liquidi
 
 sSONIC can be seamlessly integrated into various **GameFi** and **DeFi** applications within the SONIC network, opening up new opportunities for yield generation across the **SONIC SVM**.
 
----
-
 ## Stake
 
 The staking process in Chaos Finance is similar to other liquid staking protocols. Holders can stake **SONIC** through the frontend apps—whether it’s the **Chaos App** or other integrated frontends within games. Upon staking, users will receive the corresponding amount of **sSONIC** directly in their wallets.
 
----
+## Unstake
 
-## Redeem
-
-**sSONIC** holders can redeem their staked SONIC on-chain at any time. However, per the mechanism designed by the SONIC team, the initial redemption period will only be activated three months after the launch of Chaos Finance. After this period, redemptions can be processed anytime, with the waiting time dependent on the available SONIC balance in the **Redeem Pool**.
-
-- If the redemption amount is **less than the available SONIC** in the Redeem Pool, users will receive their SONIC **immediately**.
-- If the redemption amount **exceeds the pool balance**, the remaining SONIC will be returned gradually, with the waiting period depending on the pool's replenishment cycle. The Redeem Pool updates **every 24 hours**, adding new unstaked SONIC to fulfill pending requests.
-
-Redemptions follow a **first-come, first-served** basis, ensuring fairness among redeemers. In the app, users will see the estimated waiting period before executing their redemption requests.
-
-> Note: The longest possible waiting period will not exceed 3 months.
-
----
+The redemption process is divided into two actions: **unstake** and **withdraw**. Initially **sSONIC** holders submit an unstake request to burn their LSD tokens, thereby reserving a position for the equivalent amount of SONIC for later withdrawal. Since the tokens have been burnt, no rewards will be accrued after the unstake request.
 
 ## Withdraw
 
-Stakers can withdraw their **unstaked SONIC** after the locking period ends. Once withdrawn, the SONIC will be transferred directly to the user’s wallet. If the withdrawal is not initiated, the SONIC will remain securely in the contract address. Withdrawals can be executed at any time after the lock period is completed.
+According to the staking mechanism designed by the SONIC team, the withdrawal period will become active on TBD (2025-xx-xx), three months after the launch of Chaos Finance. Until this activation, withdrawal requests cannot be processed. Typically, users must wait between one day and up to a month after their unstake requests before they can withdraw their SONIC. The timing varies as follows:
+- Every 24 hours, Chaos Finance receives the principal and rewards from the SONIC chain.
+- If the received amount is less than the pending withdrawal requests, the amount accumulates.
+- If the accumulated amount exceeds the pending withdrawal requests, users can withdraw their SONIC **immediately**.
+- The withdrawal process follows a **first-come, first-served** basis, ensuring fairness among unstakers. Users will see the estimated waiting period in the app before executing their withdrawal requests.
 
----
+> Note: The longest possible waiting period would never exceed three months.
+
+## Rewards Distribution
+
+Rewards distribution is crucial to all participants. Chaos Finance has set the commission fee at 10% of the rewards. For example, if 100 SONIC in rewards is received from the chain, the distribution will be as follows:
+
+| Role | Amount | Formula |
+|----------------|------|--------------|
+|  Users         |  90  | 100*(1-0.1)  |
+|  Chaos Finance |  10  | 100*0.1      |
 
 ## Exchange Rate
 
@@ -39,8 +39,6 @@ Stakers can withdraw their **unstaked SONIC** after the locking period ends. Onc
 In **Chaos Finance**, the SONIC staked through the app is deposited into the **SONIC Staking Vault** every 24 hours, where it begins accruing rewards. The accumulated rewards are periodically calculated and reflected in the **exchange rate**, which is recorded on-chain. This on-chain rate is then used to determine the amount of SONIC users receive when they redeem their holdings.
 
 Since the protocol does not implement a **slashing mechanism**, the exchange rate **can only increase** as rewards accumulate. As a result, later redeemers may receive a larger amount of SONIC upon redemption compared to earlier redeemers.
-
----
 
 ## Yield
 
