@@ -2,17 +2,13 @@
   "pages": [
     "---Introduction---",
     "index",
-     {
-      "title": "chaos",
-      "children": [
-        "chaos",
-        "lst",
-        "token",
-      ]
+    "chaos",
     "---Architecture---",
     "architecture",
     "lsaas",
     "---Guide---",
+    "lst",
+    "token",
     "stake",
     "contract-addresses",
     "js-client-sdk"
