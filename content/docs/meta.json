@@ -2,13 +2,11 @@
   "pages": [
     "---Introduction---",
     "index",
-    "chaos",
+    "chaos-finance",
     "---Architecture---",
     "architecture",
     "lsaas",
     "---Guide---",
-    "lst",
-    "token",
     "stake",
     "contract-addresses",
     "js-client-sdk"
