@@ -1,0 +1,254 @@
+---
+title: JavaScript Client SDK
+description: Chaos Finance provided a JavaScript package for application developers, making the adoption fast and robust.
+---
+
+To add Chaos Finance Sonic LSD into your application, run this in the terminal from the root directory of the application. 
+
+```bash
+$ npm install @chaosfinance/sonic-lsd --save
+```
+
+Import functions and objects from SDK:
+
+```javascript
+import {
+    // settings functions
+    register,
+    updatePublicKey,
+
+    // mutating functions
+    stakeSonic,
+    unstakeLstSonic,
+    withdrawSonic,
+    
+    // global query functions
+    getUserMinStakeAmount,
+    getLstApr,
+    getLstRate,
+    getPlatformFeeCommission,
+    getLsdTokenAddress,
+    getTotalStakedAmount,
+    getTotalLstAmount,
+    
+    // user query functions
+    getUserLstBalance,
+    getUserSolBalance,
+    getUserSonicBalance,
+    getUserStakedAmount,
+    getUserWithdrawInfo, WithdrawInfo,
+} from "@chaosfinance/sonic-lsd"
+```
+
+## Settings Functions
+
+### register()
+
+The first function developers should call is register() which initiates the REST endpoint, signing function and LSD contract's infos.
+
+<Callout>the lsd program id and stake manager address can be found here: [Deployed Contract Addresses](contract-addresses)</Callout>
+
+```javascript
+const wallet = // Get the wallet object that user selected
+await wallet.connect()
+
+register(
+    {
+        restEndpoint:        'https://api.testnet.sonic.game',
+        signTransaction:     (tx) => wallet.signTransaction(tx),
+        signAllTransactions: (txs) => wallet.signAllTransactions(txs),
+        publicKey:           new PublicKey(wallet.publicKey.toBytes()),
+    }, {
+        lsdProgramId:        '',
+        stakeManagerAddress: '',
+    },
+    
+    // Your project identifier for off-chain analysis. e.g. 'chaos-finance' / 'fomoney'
+    // It's recommended to contact Chaos Finance to prevent identifier collisions.
+    projectId: '',
+)
+```
+
+### updatePublicKey()
+
+Set new public key when account changes. 
+
+```javascript
+const newPublicKey = new PublicKey(wallet.publicKey.toBytes()) 
+updatePublicKey(newPublicKey)
+```
+
+
+## Mutating Functions
+
+### stakeSonic()
+
+Developers should make sure that the stakeAmount is greater or equal to [the userMinStakeAmount](#getuserminstakeamount) before sending the stake tx, otherwise it fails.
+
+```javascript
+const stakeAmount = // **get the amount from user input**
+const stakeTxHash = await stakeSonic(stakeAmount)
+if (stakeTxHash) {
+    // handle success logic
+} else {
+    // alert user with failed messages
+}
+```
+
+### unstakeLstSonic()
+
+All LST holders are eligible to call `unstakeLstSonic` function to exchange their LST for SONIC.
+
+```javascript
+const unstakeLstAmount = // **get the amount from user input**
+const txHash = await unstakeLstSonic(unstakeLstAmount)
+if (txHash) {
+    // handle success logic
+} else {
+    // alert user with failed messages
+}
+```
+
+### withdrawSonic()
+
+Call this function to withdraw the amount of `claimableAmount` SONIC that the api [getUserWithdrawInfo\(\)](#getuserwithdrawinfo) returns.
+
+```javascript
+const txHash = await withdrawSonic()
+if (txHash) {
+    // handle success logic
+} else {
+    // alert user with failed messages
+}
+```
+
+## Global Query Functions
+
+### getUserMinStakeAmount()
+
+Query the minimum amount of SONIC that users can stake.
+
+```javascript
+const amount = await getUserMinStakeAmount()
+```
+
+### getLstApr()
+Get the current Annual Percentage Rate (APR) for staking
+
+```javascript
+const currentApr = await getLstApr()
+// output: 0.12 = 12%
+```
+
+### getLstRate()
+Get the lst rate how many SONIC does 1 LST worth.
+
+```javascript
+const rate = await getLstRate()
+// output: 1.09  which means 1 LST = 1.09 SONIC
+```
+
+Before staking users can pre calculate the amount of LST they will receive by:
+
+```javascript
+lstAmount = stakeAmount / rate
+// e.g. 9.1743(LST) = 10 (SONIC) / 1.09
+```
+
+The unstake amount of SONIC that users will receive can be calculated with:
+
+```javascript
+sonicAmount = unstakeLstAmount * rate
+// e.g. 10.9(SONIC) = 10 (LST) * 1.09
+```
+
+### getPlatformFeeCommission()
+
+Get the platform's commission rate, expressed with 9 decimal places. For example, a value of 50,000,000 represents a commission rate of 5%.
+
+```javascript
+const commissionRate = getPlatformFeeCommission()
+```
+
+### getLsdTokenAddress()
+
+Get the LSD Token mint address and SONIC token mint address.
+
+```javascript
+const lsdTokenAddress = getLsdTokenAddress()
+// output: {
+//    lsdTokenMintAddress: string,
+//    sonicTokenMintAddress: string,
+// }
+```
+
+### getTotalStakedAmount()
+
+Get the total amount of SONIC staked in the LSD network.
+
+```javascript
+const totalStakedAmount = await getTotalStakedAmount()
+```
+
+### getTotalLstAmount()
+
+Get the total amount of LSD tokens in the LSD network.
+
+```javascript
+const totalLstAmount = await getTotalLstAmount()
+```
+
+## User Query Functions
+
+### getUserLstBalance()
+
+When the stake tx get confirmed, call `getUserLstBalance()` to get the amount of user's lstSonic.
+
+```javascript
+const amount = await getUserLstBalance()
+```
+
+### getUserWithdrawInfo()
+After unstake, developers should query withdrawal info. It returns:
+
+1. overallAmount: the total amount of SONIC the user can withdraw after the waiting period.
+2. claimableAmount: the amount of SONIC that user can currently withdraw.
+3. remainingTimeInSeconds: the number of seconds the user needs to wait before they can call `withdrawSonic` function.
+
+```javascript
+// export interface WithdrawInfo {
+//   overallAmount: string;
+//   claimableAmount: string;
+//   remainingTimeInSeconds: number;
+// }
+
+import { getUserWithdrawInfo, WithdrawInfo } from "@chaosfinance/sonic-lsd"
+
+const info: WithdrawInfo = await getUserWithdrawInfo()
+```
+
+
+### getUserSolBalance()
+Get SOL balance of the current wallet. 
+
+```javascript
+const balance = await getUserSolBalance()
+// output: 1.25 (unit SOL)
+```
+
+### getUserSonicBalance()
+Get SONIC balance of the current wallet. 
+
+```javascript
+const balance = await getUserSonicBalance()
+// output: 1.68 (unit SONIC)
+```
+
+### getUserStakedAmount()
+
+Get total amount of SONIC token the current user staked.
+
+```javascript
+const balance = await getUserStakedAmount()
+// output: 1.68 (unit SONIC)
+```
