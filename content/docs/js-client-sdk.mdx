@@ -15,6 +15,8 @@ Import functions and objects from SDK:
 import {
     // settings functions
     register,
+    registerChain,
+    registerWallet,
     updatePublicKey,
 
     // mutating functions
@@ -42,11 +44,13 @@ import {
 
 ## Settings Functions
 
-### register()
+The first step developers should do is register REST endpoint, lsd program configs and wallet related functions. There are three functions involved: `register`, `registerChain` and `registerWallet`. The `register` function is equivalent to executing both `registerChain` and `registerWallet`. 
 
-The first function developers should call is register() which initiates the REST endpoint, signing function and LSD contract's infos.
+The `registerChain` doesn't require a connected wallet, but both `register` and `registerWallet` do. Therefore, if your app needs to retrieve on-chain status before connecting wallet, you may call `registerChain`, then you are able to query global infos, such as lst apr, min stake amount, platform fee commission etc. If you got the wallet connected, you can call `register` or `registerWallet` to finish the process, so that you can call mutating functions: stake, unstake, withdraw or user information functions.
 
 <Callout>the lsd program id and stake manager address can be found here: [Deployed Contract Addresses](contract-addresses)</Callout>
+
+### register()
 
 ```javascript
 const wallet = // Get the wallet object that user selected
@@ -65,7 +69,34 @@ register(
     
     // Your project identifier for off-chain analysis. e.g. 'chaos-finance' / 'fomoney'
     // It's recommended to contact Chaos Finance to prevent identifier collisions.
-    projectId: '',
+    ''
+)
+```
+
+### registerChain()
+
+```javascript
+registerChain(
+    'https://api.testnet.sonic.game', // REST Endpoint
+    'lsd program id', // LSD Program ID
+    'stake manager address', // Stake Manager Address
+    
+    // Project ID, Your project identifier for off-chain analysis. e.g. 'chaos-finance' / 'fomoney'
+    // It's recommended to contact Chaos Finance to prevent identifier collisions.
+    ''
+)
+```
+
+### registerWallet()
+
+```javascript
+const wallet = // Get the wallet object that user selected
+await wallet.connect()
+
+registerWallet(
+    (tx) => wallet.signTransaction(tx),       // sign transaction function
+    (txs) => wallet.signAllTransactions(txs), // sign all transactions function
+    new PublicKey(wallet.publicKey.toBytes()) // public key
 )
 ```
 
