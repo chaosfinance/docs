@@ -8,4 +8,4 @@ Each review is listed in the table below.
 
 | Auditors | Date | Description | Report | Code |
 | ------------ | ---- | ----------- | ------ | ----- |
-| ScableBit | 2025.03.20 | ChaosFinance SONIC LSD Audit | [Audit Report](https://github.com/chaosfinance/docs/tree/main/audits/202503_ScaleBit_ChaosFinance-sSONIC) | [code repo](https://github.com/chaosfinance/sonic-lsd-contracts) |
+| ScaleBit | 2025.03.20 | ChaosFinance SONIC LSD Audit | [Audit Report](https://github.com/chaosfinance/docs/tree/main/audits/202503_ScaleBit_ChaosFinance-sSONIC) | [code repo](https://github.com/chaosfinance/sonic-lsd-contracts) |
