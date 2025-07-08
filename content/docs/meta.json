@@ -5,11 +5,13 @@
     "chaos-finance",
     "---Architecture---",
     "architecture",
+    "staking-vault-arch",
     "lsaas",
     "---Security---",
     "audit",
     "---Guide---",
     "stake",
+    "setup-staking-vault",
     "contract-addresses",
     "js-client-sdk"
   ]
