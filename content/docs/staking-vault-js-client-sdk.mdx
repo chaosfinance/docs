@@ -2,9 +2,8 @@
 title: Staking Vault JS SDK
 ---
 
-The Chaos Finance Staking Vault JavaScript SDK provides a comprehensive interface for integrating Liquid Staking Derivatives (LSD) functionality into your Solana applications.
+The Chaos Finance Staking Vault JavaScript SDK provides a comprehensive interface for integrating Liquid Staking Derivatives (LSD) functionality into your SONIC applications.
 This SDK enables developers to easily implement staking, unstaking, and withdrawal operations with built-in error handling and transaction management.
-
 
 ## Installation
 
@@ -18,11 +17,22 @@ npm install @chaosfinance/svm-vault --save
 
 ### 1. Initialize the SDK
 
-First, register your SONIC network provider and project configuration:
+The first step developers should do is register REST endpoint, lsd program configs and wallet related functions.
+There are three functions involved: `register`, `registerChain` and `registerWallet`
+The register function is equivalent to executing both `registerChain` and `registerWallet`.
+
+The `registerChain` function doesn't require a connected wallet, but both `register` and `registerWallet` do.
+Therefore, if your app needs to retrieve on-chain status before connecting wallet, you may call `registerChain`,
+then you are able to query global infos, such as lst apr, min stake amount, platform fee commission etc.
+If you got the wallet connected, you can call `register` or `registerWallet` to finish the process,
+so that you can call staking functions: stake, unstake, withdraw or user information functions.
+
+#### register()
 
 ```typescript
-import { register, registerWallet } from '@chaosfinance/svm-vault';
-
+const wallet = // Get the wallet object that user selected
+await wallet.connect()
+ 
 // Register the provider with your RPC endpoint and project ID
 // Your project identifier for off-chain analysis. e.g. 'chaos-finance' / 'fomoney'
 // It's recommended to contact Chaos Finance to prevent identifier collisions.
@@ -32,6 +42,24 @@ register({
   signAllTransactions: wallet.signAllTransactions,
   publicKey: wallet.publicKey,
 }, 'your-project-id');
+```
+
+#### registerChain()
+```typescript
+registerChain(
+    'https://api.testnet.sonic.game', // REST Endpoint
+    
+    // Project ID, Your project identifier for off-chain analysis. e.g. 'chaos-finance' / 'fomoney'
+    // It's recommended to contact Chaos Finance to prevent identifier collisions.
+    ''
+)
+```
+
+#### registerWallet()
+
+```typescript
+const wallet = // Get the wallet object that user selected
+await wallet.connect()
 
 // Register wallet functions
 registerWallet(
@@ -39,6 +67,15 @@ registerWallet(
   wallet.signAllTransactions,
   wallet.publicKey
 );
+```
+
+#### updatePublicKey()
+
+Set new public key when account changes. 
+
+```javascript
+const newPublicKey = new PublicKey(wallet.publicKey.toBytes()) 
+updatePublicKey(newPublicKey)
 ```
 
 ### 2. Define Program IDs
@@ -56,8 +93,7 @@ const programIds = {
 
 <Callout>the staking vault lsd program id and its stake manager address can be found here: [Deployed Contract Addresses](contract-addresses)</Callout>
 
-
-### 3. Basic Operations
+### 3. Staking Operations
 
 #### Stake Tokens
 
@@ -103,7 +139,7 @@ try {
 
 ### User Query Functions
 
-#### `getUserSolBalance()`
+#### getUserSolBalance()
 
 Returns the user's SOL balance.
 
@@ -112,7 +148,7 @@ const solBalance = await getUserSolBalance();
 console.log('SOL Balance:', solBalance);
 ```
 
-#### `getUserStakingTokenBalance()`
+#### getUserStakingTokenBalance()
 
 Returns the user's staking token balance.
 
@@ -121,7 +157,7 @@ const stakingBalance = await getUserStakingTokenBalance(programIds);
 console.log('Staking Token Balance:', stakingBalance);
 ```
 
-#### `getUserLstBalance()`
+#### getUserLstBalance()
 
 Returns the user's LST token balance.
 
@@ -130,7 +166,7 @@ const lstBalance = await getUserLstBalance(programIds);
 console.log('LST Balance:', lstBalance);
 ```
 
-#### `getUserStakedAmount()`
+#### getUserStakedAmount()
 
 Returns the user's total staked amount in base tokens.
 
@@ -139,7 +175,7 @@ const stakedAmount = await getUserStakedAmount(programIds);
 console.log('Total Staked Amount:', stakedAmount);
 ```
 
-#### `getUserWithdrawInfo()`
+#### getUserWithdrawInfo()
 
 Returns information about user's pending withdrawals.
 
@@ -160,7 +196,7 @@ console.log('Withdrawal Info:', withdrawInfo);
 
 ### Global Query Functions
 
-#### `getTotalLstAmount()`
+#### getTotalLstAmount()
 
 Returns the total LST amount in the pool.
 
@@ -169,7 +205,7 @@ const totalLst = await getTotalLstAmount(programIds);
 console.log('Total LST in Pool:', totalLst);
 ```
 
-#### `getTotalStakedAmount()`
+#### getTotalStakedAmount()
 
 Returns the total staked amount in the pool.
 
@@ -178,7 +214,7 @@ const totalStaked = await getTotalStakedAmount(programIds);
 console.log('Total Staked in Pool:', totalStaked);
 ```
 
-#### `getLstRate()`
+#### getLstRate()
 
 Returns the current LST exchange rate.
 
@@ -187,7 +223,7 @@ const rate = await getLstRate(programIds);
 console.log('LST Rate:', rate);
 ```
 
-#### `getLstApr()`
+#### getLstApr()
 
 Returns the current APR (Annual Percentage Rate).
 
@@ -196,7 +232,7 @@ const apr = await getLstApr(programIds, 0.09); // Default 9% APR
 console.log('Current APR:', apr);
 ```
 
-#### `getUserMinStakeAmount()`
+#### getUserMinStakeAmount()
 
 Returns the minimum stake amount required.
 
@@ -204,7 +240,7 @@ Returns the minimum stake amount required.
 const amount = await getUserMinStakeAmount(programIds);
 ```
 
-#### `getUnbondingDuration()`
+#### getUnbondingDuration()
 
 Returns the unbonding duration in seconds.
 
@@ -212,7 +248,7 @@ Returns the unbonding duration in seconds.
 const unbondingDurSec = await getUnbondingDuration(programIds);
 ```
 
-#### `getTokenProgramIds()`
+#### getTokenProgramIds()
 
 Returns the token program ID for a given mint address.
 
