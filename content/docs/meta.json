@@ -13,6 +13,8 @@
     "stake",
     "setup-staking-vault",
     "contract-addresses",
-    "js-client-sdk"
+    "---SDK---",
+    "js-client-sdk",
+    "staking-vault-js-client-sdk"
   ]
 }

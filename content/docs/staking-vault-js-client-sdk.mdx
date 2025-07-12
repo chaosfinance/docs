@@ -1,0 +1,228 @@
+---
+title: Staking Vault JS SDK
+---
+
+The Chaos Finance Staking Vault JavaScript SDK provides a comprehensive interface for integrating Liquid Staking Derivatives (LSD) functionality into your Solana applications.
+This SDK enables developers to easily implement staking, unstaking, and withdrawal operations with built-in error handling and transaction management.
+
+
+## Installation
+
+To add Chaos Finance Staking Vault LSD into your application, run this in the terminal from the root directory of the application:
+
+```bash
+npm install @chaosfinance/svm-vault --save
+```
+
+## Quick Start
+
+### 1. Initialize the SDK
+
+First, register your SONIC network provider and project configuration:
+
+```typescript
+import { register, registerWallet } from '@chaosfinance/svm-vault';
+
+// Register the provider with your RPC endpoint and project ID
+// Your project identifier for off-chain analysis. e.g. 'chaos-finance' / 'fomoney'
+// It's recommended to contact Chaos Finance to prevent identifier collisions.
+register({
+  restEndpoint: 'https://api.testnet.sonic.game', // Your RPC endpoint
+  signTransaction: wallet.signTransaction,
+  signAllTransactions: wallet.signAllTransactions,
+  publicKey: wallet.publicKey,
+}, 'your-project-id');
+
+// Register wallet functions
+registerWallet(
+  wallet.signTransaction,
+  wallet.signAllTransactions,
+  wallet.publicKey
+);
+```
+
+### 2. Define Program IDs
+
+Set up your program configuration:
+
+```typescript
+const programIds = {
+  lsdProgramId: 'staking vault program id',
+   // Each staking vault has its own unique Stake Manager address,
+   // which is created during the staking vault setup
+  stakeManagerAddress: ''
+};
+```
+
+<Callout>the staking vault lsd program id and its stake manager address can be found here: [Deployed Contract Addresses](contract-addresses)</Callout>
+
+
+### 3. Basic Operations
+
+#### Stake Tokens
+
+```typescript
+import { stakeToken } from '@chaosfinance/svm-vault';
+
+try {
+  const txHash = await stakeToken(100, programIds); // Stake 100 tokens
+  console.log('Staking transaction:', txHash);
+} catch (error) {
+  console.error('Staking failed:', error.message);
+}
+```
+
+#### Unstake LST Tokens
+
+```typescript
+import { unstakeLstToken } from '@chaosfinance/svm-vault';
+
+try {
+  const txHash = await unstakeLstToken(50, programIds); // Unstake 50 LST tokens
+  console.log('Unstaking transaction:', txHash);
+} catch (error) {
+  console.error('Unstaking failed:', error.message);
+}
+```
+
+#### Withdraw Tokens
+
+```typescript
+import { withdrawToken } from '@chaosfinance/svm-vault';
+
+try {
+  const txHash = await withdrawToken(programIds);
+  console.log('Withdrawal transaction:', txHash);
+} catch (error) {
+  console.error('Withdrawal failed:', error.message);
+}
+```
+
+
+## Query Functions
+
+### User Query Functions
+
+#### `getUserSolBalance()`
+
+Returns the user's SOL balance.
+
+```typescript
+const solBalance = await getUserSolBalance();
+console.log('SOL Balance:', solBalance);
+```
+
+#### `getUserStakingTokenBalance()`
+
+Returns the user's staking token balance.
+
+```typescript
+const stakingBalance = await getUserStakingTokenBalance(programIds);
+console.log('Staking Token Balance:', stakingBalance);
+```
+
+#### `getUserLstBalance()`
+
+Returns the user's LST token balance.
+
+```typescript
+const lstBalance = await getUserLstBalance(programIds);
+console.log('LST Balance:', lstBalance);
+```
+
+#### `getUserStakedAmount()`
+
+Returns the user's total staked amount in base tokens.
+
+```typescript
+const stakedAmount = await getUserStakedAmount(programIds);
+console.log('Total Staked Amount:', stakedAmount);
+```
+
+#### `getUserWithdrawInfo()`
+
+Returns information about user's pending withdrawals.
+
+**Returns:** WithdrawInfo object
+
+```typescript
+interface WithdrawInfo {
+  overallAmount: string;           // Total amount in withdrawal process
+  claimableAmount: string;         // Amount ready to withdraw
+  remainingTimeInSeconds: number;  // Time remaining until next withdrawal
+}
+```
+
+```typescript
+const withdrawInfo = await getUserWithdrawInfo(programIds);
+console.log('Withdrawal Info:', withdrawInfo);
+```
+
+### Global Query Functions
+
+#### `getTotalLstAmount()`
+
+Returns the total LST amount in the pool.
+
+```typescript
+const totalLst = await getTotalLstAmount(programIds);
+console.log('Total LST in Pool:', totalLst);
+```
+
+#### `getTotalStakedAmount()`
+
+Returns the total staked amount in the pool.
+
+```typescript
+const totalStaked = await getTotalStakedAmount(programIds);
+console.log('Total Staked in Pool:', totalStaked);
+```
+
+#### `getLstRate()`
+
+Returns the current LST exchange rate.
+
+```typescript
+const rate = await getLstRate(programIds);
+console.log('LST Rate:', rate);
+```
+
+#### `getLstApr()`
+
+Returns the current APR (Annual Percentage Rate).
+
+```typescript
+const apr = await getLstApr(programIds, 0.09); // Default 9% APR
+console.log('Current APR:', apr);
+```
+
+#### `getUserMinStakeAmount()`
+
+Returns the minimum stake amount required.
+
+```typescript
+const amount = await getUserMinStakeAmount(programIds);
+```
+
+#### `getUnbondingDuration()`
+
+Returns the unbonding duration in seconds.
+
+```typescript
+const unbondingDurSec = await getUnbondingDuration(programIds);
+```
+
+#### `getTokenProgramIds()`
+
+Returns the token program ID for a given mint address.
+
+```typescript
+interface { // TokenProgramIds structure
+    lsdTokenMintAddress: string;
+    stakingTokenMintAddress: string;
+}
+```
+
+```typescript
+const tokenProgramIds = await getTokenProgramIds(stakingVaultLsdTokenMintAddress);
+```
