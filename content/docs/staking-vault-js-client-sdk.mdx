@@ -220,7 +220,21 @@ Returns the current LST exchange rate.
 
 ```typescript
 const rate = await getLstRate(programIds);
-console.log('LST Rate:', rate);
+// output: 1.09 which means 1 LST = 1.09 staking token
+````
+
+Before staking users can pre calculate the amount of LST they will receive by:
+
+```typescript
+lstAmount = stakeAmount / rate
+// e.g. 9.1743(LST) = 10 (staking token) / 1.09
+```
+
+The unstake amount of staking token that users will receive can be calculated with:
+
+```typescript
+tokenAmount = unstakeLstAmount * rate
+// e.g. 10.9(staking token) = 10 (LST) * 1.09
 ```
 
 #### getLstApr()
@@ -229,7 +243,7 @@ Returns the current APR (Annual Percentage Rate).
 
 ```typescript
 const apr = await getLstApr(programIds, 0.09); // Default 9% APR
-console.log('Current APR:', apr);
+// output: 0.12 = 12%
 ```
 
 #### getUserMinStakeAmount()
