@@ -38,8 +38,8 @@ await wallet.connect()
 // It's recommended to contact Chaos Finance to prevent identifier collisions.
 register({
   restEndpoint: 'https://api.testnet.sonic.game', // Your RPC endpoint
-  signTransaction: wallet.signTransaction,
-  signAllTransactions: wallet.signAllTransactions,
+  signTransaction:     (tx) => wallet.signTransaction(tx),
+  signAllTransactions: (txs) => wallet.signAllTransactions(txs),
   publicKey: wallet.publicKey,
 }, 'your-project-id');
 ```
@@ -63,8 +63,8 @@ await wallet.connect()
 
 // Register wallet functions
 registerWallet(
-  wallet.signTransaction,
-  wallet.signAllTransactions,
+  (tx) => wallet.signTransaction(tx),
+  (txs) => wallet.signAllTransactions(txs),
   wallet.publicKey
 );
 ```
