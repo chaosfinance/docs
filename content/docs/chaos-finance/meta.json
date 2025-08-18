@@ -2,6 +2,7 @@
   "title": "Chaos Finance",
   "pages": [
     "lst",
+    "isonic",
     "token"
   ],
   "defaultOpen": true

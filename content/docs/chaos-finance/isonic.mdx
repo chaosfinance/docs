@@ -1,0 +1,62 @@
+---
+title: iSONIC
+description: The iSONIC tokens are interest-bearing while retaining full liquidity within the SONIC ecosystem.
+---
+
+iSONIC can be seamlessly integrated into various **GameFi** and **DeFi** applications within the SONIC network, opening up new opportunities for yield generation across the **SONIC SVM**.
+
+<Callout>  
+The key differences between sSONIC and iSONIC(Flexible Staking) are the minimum stake amount and the unstake periods. Because of this, sSONIC is designed for individuals, while iSONIC is better suited for organizations.  
+</Callout>  
+
+
+## Stake
+
+The staking process in Chaos Finance is similar to other liquid staking protocols. Holders can stake **SONIC** through the frontend apps—whether it’s the **Chaos App** or other integrated frontends within games. Upon staking, users will receive the corresponding amount of **iSONIC** directly in their wallets.
+
+## Unstake
+
+
+*Unlike the sSONIC, users do not need to wait and call withdraw method, SONIC will be sent directly to them once an unstake request is made, and their iSONIC burnt. The process only takes a couple of minutes.*
+
+## Rewards Distribution
+
+Rewards distribution is crucial to all participants. Chaos Finance has set the commission fee at 10% of the rewards. For example, if 100 SONIC in rewards is received from the chain, the distribution will be as follows:
+
+| Role | Amount | Formula |
+|----------------|------|--------------|
+|  Users         |  90  | 100*(1-0.1)  |
+|  Chaos Finance |  10  | 100*0.1      |
+
+## Exchange Rate
+
+**iSONIC** is an interest-bearing asset that provides liquidity while continuously accumulating rewards. These rewards dynamically grow and are derived from the **SONIC Staking Contract**.
+
+For flexible staking, once the SONIC staked it begins accruing rewards instantly. The accumulated rewards are periodically calculated and reflected in the **exchange rate**, which is recorded on-chain. This on-chain rate is then used to determine the amount of SONIC users receive when they redeem their holdings.
+
+Since the protocol does not implement a **slashing mechanism**, the exchange rate **can only increase** as rewards accumulate. As a result, later redeemers may receive a larger amount of SONIC upon redemption compared to earlier redeemers.
+
+The iSONIC exchange rate($C_{r}$) is determined by a number of factors, including:
+
+- The total amount of SONIC staked in the Staking Contract: $Q_{tsk}$
+- The total amount of redeemed SONIC: $Q_{red}$
+- The amount of staking rewards: $Q_{rew}$
+- The commission ratio: $R_{com}$
+- The total amount of iSONIC minted: M
+- The total amount of iSONIC burned: N
+
+In general, the exchange rate is positively correlated with the staking income, which is influenced by these variables. The exact formula for calculating the iSONIC exchange rate is as follows:
+
+```math
+C_{i}={[\left(Q_{stk}-Q_{red}\right)+Q_{rew} *\left(1-R_{com}\right)]}/{(M-N)}
+```
+
+## Yield
+
+Under the design of the **SONIC staking mechanism**, the **SONIC Staking Vault** will be migrated to the **SONIC SVM** upon launch, ensuring that the current **APY** from the **Solana Vault** is maintained.
+
+To ensure the fungibility of **iSONIC**, the **Chaos Finance** will initially offer a **single staking option** with a **3-month lock-in period**, tied to a specific APY provided by the Vault. In the future, **Chaos Finance** plans to introduce longer staking periods, which could offer stakers the potential for higher yields and greater flexibility.
+
+## How to stake SONIC with Chaos(iSONIC)?
+
+[Follow this guide to stake SONIC with Chaos(iSONIC).](../stake-isonic)
